@@ -39,23 +39,6 @@
       <option value="Ornamentale">Ornamentale</option>
     </select>
 
-    <div id="Superficie-container" style="display:none;">
-      <label>Superficie da tatuare:</label>
-      <select id="Superficie">
-        <option value="">Seleziona un’opzione</option>
-        <option value="Piccola/Media">Piccola/Media</option>
-        <option value="Mezzo Arto">Mezzo Arto</option>
-        <option value="Intero Arto">Intero Arto</option>
-      </select>
-    </div>
-
-    <div id="Dimensione-container">
-      <label>Dimensione in cm:</label>
-      <select id="Dimensione">
-        <option value="">Seleziona un’opzione</option>
-      </select>
-    </div>
-
     <div id="Zona-container">
       <label>Zona del corpo:</label>
       <select id="Zona">
@@ -63,8 +46,25 @@
         <option value="Braccio">Braccio</option>
         <option value="Gamba">Gamba</option>
         <option value="Petto">Petto</option>
-        <option value="Pancia">Pancia</option>
+        <option value="Addome">Addome</option>
         <option value="Schiena">Schiena</option>
+      </select>
+    </div>
+
+    <div id="Superficie-container" style="display:none;">
+      <label>Superficie da tatuare:</label>
+      <select id="Superficie">
+        <option value="">Seleziona un’opzione</option>
+        <option value="Piccola/Media">Piccola/Media</option>
+        <option value="Per metà">Per metà</option>
+        <option value="Per intero">Per intero</option>
+      </select>
+    </div>
+
+    <div id="Dimensione-container">
+      <label>Dimensione in cm:</label>
+      <select id="Dimensione">
+        <option value="">Seleziona un’opzione</option>
       </select>
     </div>
 
@@ -79,7 +79,10 @@
       <input type="tel" id="Telefono" placeholder="Inserisci il tuo numero di telefono">
 
       <label for="Email">La tua email:</label>
-      <input type="email" id="Email" placeholder="Inserisci la tua email">
+      <input type="text" id="Email" placeholder="Inserisci la tua email">
+
+      <input type="hidden" name="Telefono" id="hidden-Telefono">
+      <input type="hidden" name="Email" id="hidden-Email">
 
       <label for="Descrizione">Descrizione del tatuaggio (facoltativa):</label>
       <textarea name="Descrizione" id="Descrizione" rows="10" placeholder="Inserisci una breve descrizione dell’idea.." style="width:100%; padding:10px; margin-bottom:10px; font-family: Arial, sans-serif; font-size: 14px;"></textarea>
@@ -118,20 +121,20 @@
 
     const costiSuperficie = {
       "Realistico": {
-        "Mezzo Arto": {Braccio: 900, Gamba: 1800, Petto: 1400, Pancia: 1500, Schiena: 1500},
-        "Intero Arto": {Braccio: 1550, Gamba: 3350, Petto: 2550, Pancia: 2750, Schiena: 3000}
+        "Per metà": {Braccio: 900, Gamba: 1800, Petto: 1400, Addome: 1500, Schiena: 1500},
+        "Per intero": {Braccio: 1550, Gamba: 3350, Petto: 2550, Addome: 2750, Schiena: 3000}
       },
       "Blackwork": {
-        "Mezzo Arto": {Braccio: 850, Gamba: 1200, Petto: 1000, Pancia: 1200, Schiena: 1000},
-        "Intero Arto": {Braccio: 1450, Gamba: 2150, Petto: 1750, Pancia: 2150, Schiena: 2000}
+        "Per metà": {Braccio: 850, Gamba: 1200, Petto: 1000, Addome: 1200, Schiena: 1000},
+        "Per intero": {Braccio: 1450, Gamba: 2150, Petto: 1750, Addome: 2150, Schiena: 2000}
       },
       "Concettuale": {
-        "Mezzo Arto": {Braccio: 900, Gamba: 1800, Petto: 1400, Pancia: 1500, Schiena: 1500},
-        "Intero Arto": {Braccio: 1550, Gamba: 3350, Petto: 2550, Pancia: 2750, Schiena: 3000}
+        "Per metà": {Braccio: 900, Gamba: 1800, Petto: 1400, Addome: 1500, Schiena: 1500},
+        "Per intero": {Braccio: 1550, Gamba: 3350, Petto: 2550, Addome: 2750, Schiena: 3000}
       },
       "Ornamentale": {
-        "Mezzo Arto": {Braccio: 800, Gamba: 1300, Petto: 800, Pancia: 900, Schiena: 750},
-        "Intero Arto": {Braccio: 1350, Gamba: 2350, Petto: 1350, Pancia: 1550, Schiena: 1500}
+        "Per metà": {Braccio: 800, Gamba: 1300, Petto: 800, Addome: 900, Schiena: 750},
+        "Per intero": {Braccio: 1350, Gamba: 2350, Petto: 1350, Addome: 1550, Schiena: 1500}
       }
     };
 
@@ -164,7 +167,7 @@
 
       // In base alla superficie, mostra/nasconde la dimensione
       const superficie = document.getElementById("Superficie").value;
-      if (superficie === "Mezzo Arto" || superficie === "Intero Arto") {
+      if (superficie === "Per metà" || superficie === "Per intero") {
         dimensioneContainer.style.display = "none";
       } else {
         dimensioneContainer.style.display = "block";
@@ -179,7 +182,7 @@
 
       let totale = 0;
 
-      if (superficie === "Mezzo Arto" || superficie === "Intero Arto") {
+      if (superficie === "Per metà" || superficie === "Per intero") {
         if (costiSuperficie[stile]?.[superficie]?.[zona]) {
           totale = costiSuperficie[stile][superficie][zona];
         }
@@ -207,6 +210,11 @@
     return telefonoRegex.test(phone);
     }
 
+    function validateEmail(email) {
+    const emailRegex = /^[^@]+@[^@]+\.[^@]+$/; // Verifica la presenza di una chiocciola e almeno un punto
+    return emailRegex.test(email);
+    }
+
     // Event listeners
     document.getElementById("Stile").addEventListener("change", () => {
       aggiornaDimensioniDisponibili();
@@ -224,17 +232,23 @@
 
     document.getElementById('tattooForm').addEventListener('submit', function(event) {
     const phone = document.getElementById('Telefono').value;
+    const email = document.getElementById('Email').value;
 
     // Se il numero di telefono non è valido, impedisci l'invio del form
     if (!validatePhoneNumber(phone)) {
         event.preventDefault(); // Blocca l'invio
         alert('Numero di telefono non valido!'); // Mostra un messaggio d'errore
-    } else {
-        // Se il numero è valido, aggiorna i campi nascosti e invia il form
+    }
+    // Se l'email non è valida, impedisci l'invio del form
+    else if (!validateEmail(email)) {
+        event.preventDefault(); // Blocca l'invio
+        alert('Email non valida!');
+    } 
+    else {
+        // Se entrambi sono validi, aggiorna i campi nascosti e invia il form
         aggiornaCampiNascosti();
     }
 });
-
 
 
     window.onload = () => {
