@@ -15,12 +15,18 @@
       display: block;
       margin-bottom: 5px;
     }
-     select, input, textarea {
+    select, input, textarea {
       width: 100%;
       padding: 10px;
       margin: 10px 0;
       font-size: 14px;
     }
+    input[type="tel"], input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 14px;
+    }   
     .result { font-size: 20px; font-weight: bold; margin-top: 20px; }
   </style>
 </head>
@@ -28,7 +34,7 @@
   <div class="container">
     <h2>Stima del prezzo</h2>
 
-    <label>Stile del Tatuaggio:</label>
+    <label>Stile del tatuaggio:</label>
     <select id="Stile">
       <option value="">Seleziona un’opzione</option>
       <option value="Mini-Realistico">Mini Realistico</option>
