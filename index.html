@@ -3,11 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Preventivo Tatuaggio</title>
   <style>
     body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
     .container { max-width: 400px; margin: auto; }
-    select, input, textarea { width: 100%; padding: 10px; margin: 10px 0; }
+    h2, h3 {
+      font-size: 24px; /* Imposta la stessa dimensione per entrambi */
+      margin-bottom: 20px;
+    }
+    label {
+      font-size: 16px;
+      display: block;
+      margin-bottom: 5px;
+    }
+     select, input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 14px;
+    }
     .result { font-size: 20px; font-weight: bold; margin-top: 20px; }
   </style>
 </head>
@@ -59,18 +72,20 @@
 
     <hr style="margin: 30px 0;">
 
-    <form action="https://formspree.io/f/mdkewvpw" method="POST">
+    <form id="tattooForm" action="https://formspree.io/f/mdkewvpw" method="POST">
       <h3>Richiedi un contatto</h3>
 
-      <label for="Telefono">Il tuo contatto:</label>
-      <input type="text" name="Telefono" id="Telefono" placeholder="Inserisci il tuo numero di telefono" required style="width:100%; padding:10px; margin-bottom:10px;">
+      <label for="Telefono">Il tuo numero di telefono:</label>
+      <input type="tel" id="Telefono" placeholder="Inserisci il tuo numero di telefono">
+
+      <label for="Email">La tua email:</label>
+      <input type="email" id="Email" placeholder="Inserisci la tua email">
 
       <label for="Descrizione">Descrizione del tatuaggio (facoltativa):</label>
       <textarea name="Descrizione" id="Descrizione" rows="10" placeholder="Inserisci una breve descrizione dell’idea.." style="width:100%; padding:10px; margin-bottom:10px; font-family: Arial, sans-serif; font-size: 14px;"></textarea>
 
       <label for="LinkFoto">Link all’immagine (facoltativo):</label>
-      <input type="url" name="LinkFoto" id="linkFoto" placeholder="Inserisci un link" style="width:100%; padding:10px; margin-bottom:10px;">
-
+      <input type="url" name="LinkFoto" id="linkFoto" placeholder="Inserisci un link (Google, Google Drive, Instagram..)" style="width:100%; padding:10px; margin-bottom:10px;">
 
       <input type="hidden" name="Stile" id="hidden-Stile">
       <input type="hidden" name="Superficie" id="hidden-Superficie">
@@ -185,6 +200,11 @@
       document.getElementById("hidden-prezzo").value = document.getElementById("totale").innerText;
     }
 
+    function validatePhoneNumber(phone) {
+    const telefonoRegex = /^\d{10}$/; 
+    return telefonoRegex.test(phone);
+    }
+
     // Event listeners
     document.getElementById("Stile").addEventListener("change", () => {
       aggiornaDimensioniDisponibili();
@@ -200,11 +220,20 @@
     document.getElementById("Dimensione").addEventListener("change", calcolaPreventivo);
     document.getElementById("Zona").addEventListener("change", calcolaPreventivo);
 
-    document.querySelector("form").addEventListener("submit", function(e) {
-      e.preventDefault();
-      aggiornaCampiNascosti();
-      this.submit(); // invia il form dopo aver aggiornato
-    });
+    document.getElementById('tattooForm').addEventListener('submit', function(event) {
+    const phone = document.getElementById('Telefono').value;
+
+    // Se il numero di telefono non è valido, impedisci l'invio del form
+    if (!validatePhoneNumber(phone)) {
+        event.preventDefault(); // Blocca l'invio
+        alert('Numero di telefono non valido!'); // Mostra un messaggio d'errore
+    } else {
+        // Se il numero è valido, aggiorna i campi nascosti e invia il form
+        aggiornaCampiNascosti();
+    }
+});
+
+
 
     window.onload = () => {
       aggiornaVisibilitaCampi();
